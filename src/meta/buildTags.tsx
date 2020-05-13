@@ -93,7 +93,7 @@ const buildTags = (config: BuildTagsParams) => {
   }
 
   if (config.languageAlternates && config.languageAlternates.length > 0) {
-    config.languageAlternates.forEach(languageAlternate => {
+    config.languageAlternates.forEach((languageAlternate) => {
       tagsToRender.push(
         <link
           rel="alternate"
@@ -430,6 +430,40 @@ const buildTags = (config: BuildTagsParams) => {
           );
         }
       }
+    } else if (config.openGraph.type === 'product') {
+      if (config.openGraph.product) {
+        if (config.openGraph.product.pluralTitle) {
+          tagsToRender.push(
+            <meta
+              key="product:plural_title"
+              property="product:plural_title"
+              content={config.openGraph.product.pluralTitle}
+            />,
+          );
+        }
+
+        if (config.openGraph.product.price) {
+          if (config.openGraph.product.price.amount) {
+            tagsToRender.push(
+              <meta
+                key="product:price:amount"
+                property="product:price:amount"
+                content={String(config.openGraph.product.price.amount)}
+              />,
+            );
+          }
+
+          if (config.openGraph.product.price.currency) {
+            tagsToRender.push(
+              <meta
+                key="product:price:amount"
+                property="product:price:currency"
+                content={config.openGraph.product.price.currency}
+              />,
+            );
+          }
+        }
+      }
     }
 
     if (config.openGraph.title || config.title) {
@@ -614,7 +648,7 @@ const buildTags = (config: BuildTagsParams) => {
   }
 
   if (config.additionalMetaTags && config.additionalMetaTags.length > 0) {
-    config.additionalMetaTags.forEach(tag => {
+    config.additionalMetaTags.forEach((tag) => {
       tagsToRender.push(
         <meta key={tag.name ? tag.name : tag.property} {...tag} />,
       );
